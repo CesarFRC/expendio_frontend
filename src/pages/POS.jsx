@@ -112,8 +112,13 @@ export default function POS() {
                 width: '100%', height: 60, borderRadius: '0.5rem', marginBottom: '0.75rem',
                 background: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(59,130,246,0.1))',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                overflow: 'hidden'
               }}>
-                <ShoppingBag size={24} style={{ color: 'var(--accent-green)', opacity: 0.7 }} />
+                {p.imagen_url ? (
+                  <img src={p.imagen_url} alt={p.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <ShoppingBag size={24} style={{ color: 'var(--accent-green)', opacity: 0.7 }} />
+                )}
               </div>
               <p style={{ fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.25rem', lineHeight: 1.3 }}>
                 {p.nombre}

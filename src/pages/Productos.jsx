@@ -9,7 +9,7 @@ import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
-const EMPTY_FORM = { nombre: '', precio: '', stock: '', stock_minimo: '', codigo_barras: '', categoria_id: '', proveedor_id: '' };
+const EMPTY_FORM = { nombre: '', precio: '', stock: '', stock_minimo: '', codigo_barras: '', imagen_url: '', categoria_id: '', proveedor_id: '' };
 
 export default function Productos() {
   const { isAdmin } = useAuth();
@@ -36,6 +36,7 @@ export default function Productos() {
     setForm({
       nombre: p.nombre, precio: p.precio, stock: p.stock ?? '',
       stock_minimo: p.stock_minimo ?? '', codigo_barras: p.codigo_barras ?? '',
+      imagen_url: p.imagen_url ?? '',
       categoria_id: p.categoria?.id ?? '', proveedor_id: p.proveedor?.id ?? '',
     });
     setModalOpen(true);
@@ -50,6 +51,7 @@ export default function Productos() {
         ...(form.stock !== '' ? { stock: parseInt(form.stock) } : {}),
         ...(form.stock_minimo !== '' ? { stock_minimo: parseInt(form.stock_minimo) } : {}),
         ...(form.codigo_barras ? { codigo_barras: form.codigo_barras } : {}),
+        ...(form.imagen_url ? { imagen_url: form.imagen_url } : {}),
         ...(form.categoria_id ? { categoria_id: parseInt(form.categoria_id) } : {}),
         ...(form.proveedor_id ? { proveedor_id: parseInt(form.proveedor_id) } : {}),
       };
@@ -187,6 +189,10 @@ export default function Productos() {
                 <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Código de barras</label>
                 <input className="input" value={form.codigo_barras} onChange={(e) => setForm({ ...form, codigo_barras: e.target.value })} placeholder="Opcional" />
               </div>
+            </div>
+            <div style={{ marginBottom: '0.75rem' }}>
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>URL de la imagen (Opcional)</label>
+              <input className="input" value={form.imagen_url} onChange={(e) => setForm({ ...form, imagen_url: e.target.value })} placeholder="https://ejemplo.com/imagen.png" />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
               <div>
