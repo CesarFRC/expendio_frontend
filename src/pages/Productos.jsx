@@ -143,7 +143,7 @@ export default function Productos() {
                     <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}> uds.</span>
                   </td>
                   <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{p.categoria?.nombre || '—'}</td>
-                  <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{p.proveedor?.nombre || '—'}</td>
+                  <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{p.proveedor?.razon_social || '—'}</td>
                   <td><StockBadge stock={p.stock ?? 0} stockMinimo={p.stock_minimo ?? 5} /></td>
                   {isAdmin && (
                     <td>
@@ -206,7 +206,7 @@ export default function Productos() {
                 <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Proveedor</label>
                 <select className="input" value={form.proveedor_id} onChange={(e) => setForm({ ...form, proveedor_id: e.target.value })}>
                   <option value="">Sin proveedor</option>
-                  {proveedores.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+                  {proveedores.map((p) => <option key={p.id} value={p.id}>{p.razon_social}</option>)}
                 </select>
               </div>
             </div>

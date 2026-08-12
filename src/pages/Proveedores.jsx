@@ -5,7 +5,7 @@ import { PageLoader } from '../components/ui/LoadingSpinner';
 import { Modal } from '../components/ui/Modal';
 import toast from 'react-hot-toast';
 
-const EMPTY_FORM = { nombre: '', contacto: '', telefono: '', email: '' };
+const EMPTY_FORM = { razon_social: '', direccion: '', telefono: '', email: '' };
 
 export default function Proveedores() {
   const [proveedores, setProveedores] = useState([]);
@@ -21,14 +21,14 @@ export default function Proveedores() {
   const openCreate = () => { setEditing(null); setForm(EMPTY_FORM); setModalOpen(true); };
   const openEdit = (p) => {
     setEditing(p);
-    setForm({ nombre: p.nombre, contacto: p.contacto || '', telefono: p.telefono || '', email: p.email || '' });
+    setForm({ razon_social: p.razon_social, direccion: p.direccion || '', telefono: p.telefono || '', email: p.email || '' });
     setModalOpen(true);
   };
 
   const handleSave = async (e) => {
     e.preventDefault(); setSaving(true);
     try {
-      const payload = { nombre: form.nombre, contacto: form.contacto || undefined, telefono: form.telefono || undefined, email: form.email || undefined };
+      const payload = { razon_social: form.razon_social, direccion: form.direccion || undefined, telefono: form.telefono || undefined, email: form.email || undefined };
       if (editing) { await proveedoresService.update(editing.id, payload); toast.success('Proveedor actualizado'); }
       else { await proveedoresService.create(payload); toast.success('Proveedor creado'); }
       setModalOpen(false); load();
@@ -66,15 +66,15 @@ export default function Proveedores() {
                 }}>
                   <Truck size={18} style={{ color: 'var(--accent-green)' }} />
                 </div>
-                <p style={{ fontWeight: 700, fontSize: '0.95rem' }}>{p.nombre}</p>
+                <p style={{ fontWeight: 700, fontSize: '0.95rem' }}>{p.razon_social}</p>
               </div>
               <button className="btn btn-ghost btn-icon btn-sm" onClick={() => openEdit(p)}><Edit2 size={13} /></button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-              {p.contacto && (
+              {p.direccion && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                  <Truck size={12} /> {p.contacto}
+                  <Truck size={12} /> {p.direccion}
                 </div>
               )}
               {p.telefono && (
@@ -96,12 +96,12 @@ export default function Proveedores() {
         <form onSubmit={handleSave}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
             <div>
-              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Nombre *</label>
-              <input className="input" required value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} placeholder="Ej: Distribuidora XYZ" />
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Razón Social *</label>
+              <input className="input" required value={form.razon_social} onChange={(e) => setForm({ ...form, razon_social: e.target.value })} placeholder="Ej: Grupo Bimbo S.A. de C.V." />
             </div>
             <div>
-              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Persona de contacto</label>
-              <input className="input" value={form.contacto} onChange={(e) => setForm({ ...form, contacto: e.target.value })} placeholder="Nombre del contacto" />
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Dirección</label>
+              <input className="input" value={form.direccion} onChange={(e) => setForm({ ...form, direccion: e.target.value })} placeholder="Dirección del proveedor" />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
               <div>

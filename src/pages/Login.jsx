@@ -89,26 +89,6 @@ export default function Login() {
             Punto de venta, inventario y administración para tu expendio en un solo lugar.
           </p>
         </div>
-
-        {/* Stats decorativas */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {[
-            { label: 'Ventas en tiempo real', icon: '📊' },
-            { label: 'Control de inventario', icon: '📦' },
-            { label: 'Gestión de empleados', icon: '👥' },
-          ].map(({ label, icon }) => (
-            <div key={label} style={{
-              display: 'flex', alignItems: 'center', gap: '0.75rem',
-              padding: '0.75rem 1rem',
-              background: 'rgba(255,255,255,0.03)',
-              borderRadius: 8,
-              border: '1px solid var(--border)',
-            }}>
-              <span style={{ fontSize: '1.1rem' }}>{icon}</span>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{label}</span>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* ── Login form panel ───────────────────────────────────── */}
@@ -130,9 +110,6 @@ export default function Login() {
             }}>
               Iniciar sesión
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-              Ingresa con tus credenciales de acceso
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -222,15 +199,6 @@ export default function Login() {
               )}
             </button>
           </form>
-
-          <p style={{
-            textAlign: 'center',
-            marginTop: '2.5rem',
-            fontSize: '0.75rem',
-            color: 'var(--text-muted)',
-          }}>
-            © {new Date().getFullYear()} Expendio — Sistema de Gestión
-          </p>
         </div>
       </div>
     </div>
