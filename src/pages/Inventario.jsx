@@ -35,6 +35,7 @@ export default function Inventario() {
         producto_id: parseInt(form.producto_id),
         cantidad: parseInt(form.cantidad),
         motivo: form.motivo,
+        tipo_movimiento: tipoModal,
       };
       if (tipoModal === 'entrada') await inventarioService.registrarEntrada(payload);
       else await inventarioService.registrarSalida(payload);
