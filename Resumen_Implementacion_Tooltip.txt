@@ -1,0 +1,50 @@
+================================================================================
+           REPORTE DE IMPLEMENTACIÓN: COMPONENTE TOOLTIP (MEJORA UX)
+================================================================================
+
+Se ha implementado de manera exitosa el nuevo componente "Tooltip" en el
+proyecto Expendio, con el objetivo de resolver la heurística de usabilidad
+referente a "Ayuda y Documentación". 
+
+A continuación, se detallan los cambios realizados en el código fuente:
+
+--------------------------------------------------------------------------------
+1. CREACIÓN DEL COMPONENTE REACT (src/components/ui/Tooltip.jsx)
+--------------------------------------------------------------------------------
+• Se desarrolló un componente funcional reutilizable llamado `Tooltip`.
+• Gestión de Estado: Utiliza el hook `useState` de React para manejar la 
+  visibilidad (`isVisible`) del globo de texto.
+• Accesibilidad e Interacción: Se integraron los eventos `onMouseEnter` y 
+  `onMouseLeave` (para interacción con ratón), así como `onFocus` y `onBlur`
+  (para navegación por teclado), garantizando una experiencia accesible.
+• Propiedades (Props): 
+  - `children`: El elemento visual que disparará el tooltip (ej. un ícono).
+  - `text`: El texto explicativo a mostrar.
+  - `position`: La ubicación deseada del globo ('top', 'bottom', 'left', 'right').
+
+--------------------------------------------------------------------------------
+2. INTEGRACIÓN AL SISTEMA DE DISEÑO (src/index.css)
+--------------------------------------------------------------------------------
+• Se añadieron las clases CSS necesarias al final del archivo global `index.css`.
+• Consistencia Visual: Se utilizaron los "Design Tokens" nativos del proyecto
+  para asegurar que el componente se sienta parte integral del sistema:
+  - Fondos oscuros: `var(--bg-elevated)`
+  - Bordes tenues: `var(--border-light)`
+  - Tipografía: Se usó la fuente principal `DM Sans`.
+• Detalles UI: 
+  - Se agregó una sutil animación de entrada (`fadeIn`) para suavizar la 
+    aparición del globo.
+  - Se implementó un triángulo apuntador utilizando pseudo-elementos (`::after`) 
+    construido puramente con bordes CSS.
+  - Se añadió una ligera sombra (`box-shadow`) para dar sensación de profundidad
+    y separación del fondo.
+
+--------------------------------------------------------------------------------
+3. ESTADO ACTUAL
+--------------------------------------------------------------------------------
+El componente se encuentra 100% funcional y listo para ser importado y 
+utilizado en cualquier página (Dashboard, Punto de Venta, etc.) para agregar
+descripciones contextuales y mejorar la comprensión de la interfaz por parte 
+del usuario final.
+
+================================================================================

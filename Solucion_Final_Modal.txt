@@ -1,0 +1,27 @@
+Solución Definitiva al Problema de Renderizado y Scroll en el Modal
+=======================================================================
+
+Problemas Originales:
+1. Franja negra en la parte inferior: Causada por una interacción entre `backdrop-filter: blur()`, flexbox y el scroll del navegador (especialmente un bug de Chrome). El overlay colapsaba su área de renderizado de efectos visuales cuando había contenido desplazable.
+2. Título cortado (oculto en la parte superior): Al abrirse el modal, si contenía un formulario con elementos auto-enfocables (como un <select> o el primer <input>), el navegador automáticamente hacía scroll hacia abajo para mostrar ese input, empujando el encabezado (título y botón de cerrar) fuera del área visible debido a que todo el contenedor tenía `overflow: hidden` o `auto`.
+
+Solución Implementada:
+----------------------
+Se reescribió completamente el componente `Modal.jsx` (src/components/ui/Modal.jsx) abandonando el CSS externo y usando las mejores prácticas de React para modales (Portals).
+
+1. Uso de React.createPortal:
+   En lugar de renderizar el modal en la jerarquía normal del DOM (donde puede ser afectado por el CSS y contextos de scroll de sus elementos padres como `Inventario.jsx`), ahora el modal se inyecta directamente al final de `document.body` usando `createPortal`. Esto garantiza que siempre esté encima de todo y no herede problemas de overflow de sus ancestros.
+
+2. Estilos Inline Puros:
+   Se reemplazaron las dependencias de clases CSS y Tailwind (que causaban conflictos durante el build y dependían del orden de importación) por estilos en línea puros (inline styles). Esto asegura que el layout del modal sea a prueba de balas en cualquier contexto.
+
+3. Separación de Zonas de Scroll (Estructura Flex-Column):
+   Para evitar que el título se corte por el auto-scroll del navegador, el contenido del modal se dividió estrictamente en dos partes:
+   - Header Fijo (`flex-shrink: 0`): Contiene el título y el botón de cerrar. Al tener `flex-shrink: 0` y no estar dentro del área con overflow, nunca puede ser empujado fuera de la vista.
+   - Body Scrolleable (`overflow-y: auto`, `flex: 1`): Contiene el `children` (el formulario). Si el navegador hace auto-scroll a un input, solo desplazará esta sección interna, manteniendo el título siempre intacto en la parte superior.
+
+4. Altura Dinámica de Viewport (100dvh):
+   Se utilizó `max-height: calc(100dvh - 3rem)` para que el modal respete el tamaño real de la pantalla, incluso en navegadores móviles donde las barras de direcciones cambian de tamaño, evitando así desbordamientos inesperados.
+
+5. Eliminación de `backdrop-filter`:
+   Se eliminó el efecto `blur()` que causaba el bug de renderizado (franja negra) en navegadores basados en Chromium, y en su lugar se utilizó un fondo sólido oscuro (`rgba(0,0,0,0.88)`), logrando el mismo enfoque visual hacia el usuario sin comprometer la estabilidad visual del sistema.

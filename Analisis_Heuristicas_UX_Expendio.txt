@@ -1,0 +1,318 @@
+================================================================================
+        ANÁLISIS DE CUMPLIMIENTO DE PRINCIPIOS DE EXPERIENCIA DE USUARIO (UX)
+                        PROYECTO: EXPENDIO — SISTEMA DE GESTIÓN
+================================================================================
+
+Fecha de evaluación:   13 de agosto de 2026
+Proyecto evaluado:     Expendio Frontend (React + Vite)
+Evaluador:             Análisis automatizado de código fuente
+
+Descripción general del sistema:
+Sistema integral de gestión para expendios que incluye Punto de Venta (POS),
+administración de inventario, catálogo de productos, gestión de clientes,
+empleados, proveedores, categorías y registro de ventas con tickets.
+
+Páginas evaluadas:
+  • Login (inicio de sesión)
+  • Dashboard (panel principal)
+  • POS — Punto de Venta
+  • Productos (catálogo)
+  • Inventario (movimientos de stock)
+  • Ventas (historial)
+  • Ticket (comprobante de venta)
+  • Clientes
+  • Empleados
+  • Categorías
+  • Proveedores
+
+Componentes transversales evaluados:
+  • Sidebar (menú lateral de navegación)
+  • Navbar (barra superior)
+  • Modal (ventanas modales)
+  • LoadingSpinner / PageLoader
+  • Badge (etiquetas de estado)
+  • Sistema de diseño CSS (index.css — design tokens)
+
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+1. VISIBILIDAD DEL ESTADO DEL SISTEMA
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: El usuario siempre debe saber qué está pasando. Si hacen clic en
+un botón para descargar algo, el sistema debe responder (por ejemplo, mostrando
+una barra de progreso o un ícono de carga).
+
+VEREDICTO: ✅ CUMPLE
+
+Evidencia encontrada en el código:
+
+  1. Estado de carga global (PageLoader):
+     Todas las páginas implementan un estado "loading" que muestra un spinner
+     animado con el texto "Cargando..." mientras se obtienen datos del servidor.
+     Uso en todas las páginas de gestión.
+
+  2. Estado de carga en botones de acción:
+     Los botones de envío cambian su texto y se deshabilitan mientras se procesa
+     una operación:
+       • Login: "Entrar" cambia a un spinner + "Ingresando..."
+       • POS: "Cobrar" cambia a "Procesando..."
+       • Modales: Los botones cambian a "Guardando..."
+
+  3. Notificaciones toast:
+     Se utiliza react-hot-toast para retroalimentación inmediata en cada acción
+     (éxito y error).
+
+  4. Indicadores visuales en tiempo real:
+     • Alertas de stock bajo en el Navbar
+     • Contador de items en el carrito (POS)
+     • Elemento activo resaltado en el Sidebar
+
+
+────────────────────────────────────────────────────────────────────────────────
+2. RELACIÓN ENTRE EL SISTEMA Y EL MUNDO REAL
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: Habla el idioma del usuario. Utiliza palabras, íconos y conceptos
+que le sean familiares en lugar de usar jerga técnica interna.
+
+VEREDICTO: ✅ CUMPLE
+
+Evidencia encontrada en el código:
+
+  1. Interfaz en español:
+     Todo el texto de la interfaz está en español claro, sin jerga técnica.
+
+  2. Formato localizado:
+     • Moneda: Intl.NumberFormat configurado para MXN (pesos mexicanos).
+     • Fechas: toLocaleString('es-MX') para mostrar fechas familiares.
+
+  3. Iconografía intuitiva (Lucide):
+     • ShoppingCart para POS
+     • Package para Productos
+     • Users para Clientes
+     • Truck para Proveedores
+
+  4. Terminología del negocio:
+     Uso de conceptos familiares: "folio", "stock", "descuento", "subtotal",
+     "total", "efectivo", "tarjeta", "transferencia".
+
+  5. Placeholders contextuales:
+     Ejemplos reales en formularios ("Ej: Coca-Cola 600ml").
+
+
+────────────────────────────────────────────────────────────────────────────────
+3. CONTROL Y LIBERTAD DEL USUARIO
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: Todos nos equivocamos y hacemos clic donde no debemos. Tu interfaz
+debe ofrecer "salidas de emergencia" claras, como botones de deshacer, atrás o
+cancelar.
+
+VEREDICTO: ✅ CUMPLE (con áreas de mejora menor)
+
+Evidencia encontrada en el código:
+
+  1. Salidas claras:
+     • Botón "Cancelar" en todas las modales.
+     • Cierre de modales con tecla Escape, clic fuera de la modal o botón "X".
+     • Botón "Volver" en la vista de Ticket.
+     • Botón "Limpiar" para vaciar el carrito rápidamente en POS.
+
+  2. Control granular:
+     • Control detallado de cantidades en el carrito (+, -, eliminar).
+
+  3. Confirmaciones:
+     • Confirmación (confirm) antes de eliminar elementos.
+
+  Área de mejora: No existe función de "deshacer" tras eliminar un registro
+  (se elimina permanentemente tras confirmar).
+
+
+────────────────────────────────────────────────────────────────────────────────
+4. CONSISTENCIA Y ESTÁNDARES
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: No reinventes la rueda. Mantén los mismos colores, tipografías y
+comportamientos de los botones en todas las pantallas.
+
+VEREDICTO: ✅ CUMPLE
+
+Evidencia encontrada en el código:
+
+  1. Design Tokens (index.css):
+     Sistema completo de variables para fondos, bordes, colores semánticos
+     y transiciones, aplicado en toda la app.
+
+  2. Tipografía estructurada:
+     Space Grotesk para títulos, DM Sans para cuerpo de texto, JetBrains Mono
+     para datos como folios.
+
+  3. Componentes reutilizables:
+     Consistencia garantizada mediante componentes como Badge, Modal, PageLoader.
+
+  4. Jerarquía visual:
+     Estructura repetida de encabezado, tabla/grid y modales en todas las
+     pantallas de gestión.
+
+  5. Clases de botones estandarizadas:
+     btn-primary, btn-secondary, btn-danger, btn-ghost.
+
+
+────────────────────────────────────────────────────────────────────────────────
+5. PREVENCIÓN DE ERRORES
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: Un diseño cuidadoso evita problemas antes de que ocurran.
+
+VEREDICTO: ✅ CUMPLE
+
+Evidencia encontrada en el código:
+
+  1. Restricciones en formularios:
+     Atributos HTML5 (required, type="email", type="number", min, step,
+     minLength).
+
+  2. Selectores sobre texto libre:
+     Uso de <select> y botones de opciones en lugar de inputs de texto (ej.
+     selección de método de pago, categorías, roles).
+
+  3. Validación de reglas de negocio:
+     • Verificación de stock en tiempo real al agregar al carrito.
+     • Filtrado de productos sin stock o descontinuados en el POS.
+
+  4. Deshabilitación de botones:
+     Se previene el doble envío desactivando botones durante procesos
+     (disabled={saving/loading/submitting}).
+
+
+────────────────────────────────────────────────────────────────────────────────
+6. RECONOCER EN LUGAR DE RECORDAR
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: Minimiza la carga de memoria del usuario. Las opciones deben ser
+visibles o fácilmente accesibles.
+
+VEREDICTO: ✅ CUMPLE
+
+Evidencia encontrada en el código:
+
+  1. Navegación persistente:
+     Sidebar y Navbar mantienen al usuario orientado (títulos de página claros).
+
+  2. Resúmenes y Badges visuales:
+     • Contadores en encabezados ("15 productos activos").
+     • Badges de color para estado ("En stock" verde, "Stock bajo" ámbar).
+     • Tarjetas KPI en Dashboard.
+
+  3. Opciones desplegables completas:
+     Selectores muestran el nombre del ítem y su stock disponible.
+
+
+────────────────────────────────────────────────────────────────────────────────
+7. FLEXIBILIDAD Y EFICIENCIA DE USO
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: La interfaz debe ser sencilla para principiantes, pero ofrecer
+herramientas para usuarios avanzados.
+
+VEREDICTO: ⚠️ CUMPLE PARCIALMENTE
+
+Evidencia encontrada en el código:
+
+  1. Aceleradores implementados:
+     • Búsqueda instantánea en vivo (sin botón de buscar) en varias tablas.
+     • Clic directo para agregar productos en el POS.
+     • Atajo de teclado (Escape) para cerrar modales.
+     • Sidebar colapsable.
+
+  Áreas de mejora: Faltan más atajos de teclado globales (ej. para cobrar rápido,
+  para abrir búsqueda) y no se aprovecha el escaneo de código de barras
+  directamente como input principal en el POS.
+
+
+────────────────────────────────────────────────────────────────────────────────
+8. DISEÑO ESTÉTICO Y MINIMALISTA
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: No satures la pantalla con elementos decorativos o información
+irrelevante.
+
+VEREDICTO: ✅ CUMPLE
+
+Evidencia encontrada en el código:
+
+  1. Paleta sobria y contrastante:
+     Tonos oscuros con acento ámbar (estética premium, poco fatigante).
+
+  2. Enfoque en la información:
+     Tablas limpias sin líneas verticales redundantes, uso adecuado de espacios
+     en blanco (padding generoso).
+
+  3. Estados vacíos amigables:
+     Iconos tenues con mensajes claros ("No hay productos") en lugar de tablas
+     rotas.
+
+
+────────────────────────────────────────────────────────────────────────────────
+9. AYUDAR A ENTENDER Y RESOLVER ERRORES
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: Los mensajes de error deben estar en lenguaje claro, explicar qué
+falló y sugerir una solución.
+
+VEREDICTO: ✅ CUMPLE (con áreas de mejora menor)
+
+Evidencia encontrada en el código:
+
+  1. Mensajes amigables:
+     Toasts muestran mensajes útiles extraídos del backend ("Credenciales
+     inválidas", "El carrito está vacío", "Stock insuficiente").
+
+  2. Fallbacks inteligentes:
+     Redirecciones automáticas ante errores (ej. sesión expirada -> login,
+     ticket inexistente -> ventas).
+
+  Áreas de mejora: Algunos errores genéricos de red no ofrecen pasos concretos
+  para resolver (ej. "Revisa tu conexión"). No hay pantalla 404 explícita.
+
+
+────────────────────────────────────────────────────────────────────────────────
+10. AYUDA Y DOCUMENTACIÓN
+────────────────────────────────────────────────────────────────────────────────
+
+Definición: Es importante ofrecer una sección de ayuda o preguntas frecuentes.
+
+VEREDICTO: ⚠️ NO CUMPLE
+
+Evidencia encontrada en el código:
+
+  No se encontró sección de Ayuda, FAQ, tooltips informativos, ni manuales de
+  usuario integrados en el código analizado. El diseño se apoya totalmente
+  en su usabilidad inherente.
+
+  Áreas de mejora (Alta Prioridad): Incluir tooltips en métricas o configuraciones,
+  o un menú de "Soporte" / "Ayuda".
+
+
+================================================================================
+                         RESUMEN EJECUTIVO DE CUMPLIMIENTO
+================================================================================
+
+1. Visibilidad del estado del sistema       : ✅ CUMPLE
+2. Relación sistema — mundo real            : ✅ CUMPLE
+3. Control y libertad del usuario           : ✅ CUMPLE
+4. Consistencia y estándares                : ✅ CUMPLE
+5. Prevención de errores                    : ✅ CUMPLE
+6. Reconocer en lugar de recordar           : ✅ CUMPLE
+7. Flexibilidad y eficiencia de uso         : ⚠️ CUMPLE PARCIALMENTE
+8. Diseño estético y minimalista            : ✅ CUMPLE
+9. Ayudar a entender y resolver errores     : ✅ CUMPLE
+10. Ayuda y documentación                   : ⚠️ NO CUMPLE
+
+CALIFICACIÓN ESTIMADA: 85/100
+
+================================================================================
+                              FIN DEL DOCUMENTO
+================================================================================

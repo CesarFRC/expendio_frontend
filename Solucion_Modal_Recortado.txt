@@ -1,0 +1,48 @@
+================================================================================
+           REPORTE DE CORRECCIÓN: MODALES RECORTADOS
+================================================================================
+
+Se ha corregido el problema visual donde los modales con mucho contenido 
+(como el formulario de crear/editar productos) se mostraban recortados 
+en la parte superior de la pantalla, impidiendo ver el título y el botón 
+de cerrar.
+
+--------------------------------------------------------------------------------
+¿POR QUÉ OCURRÍA EL PROBLEMA?
+--------------------------------------------------------------------------------
+El contenedor principal del modal (`.modal-overlay`) utilizaba la propiedad CSS
+`align-items: center`. Esta propiedad obliga al navegador a centrar el contenido
+exactamente a la mitad de la pantalla. Sin embargo, cuando el contenido del 
+modal es más alto que la pantalla misma, el centrado hace que el modal 
+sobresalga tanto por arriba como por abajo de forma equitativa. Esto causaba
+que la parte superior quedara oculta y fuera inaccesible.
+
+--------------------------------------------------------------------------------
+SOLUCIÓN IMPLEMENTADA (src/index.css)
+--------------------------------------------------------------------------------
+Se modificaron las clases `.modal-overlay` y `.modal-box` en el archivo 
+`index.css` de la siguiente manera:
+
+1. Overlay (`.modal-overlay`):
+   - Se cambió `align-items: center` por `align-items: flex-start`. Esto asegura 
+     que el modal empiece desde arriba si es muy largo.
+   - Se añadió `overflow-y: auto` al fondo oscuro para permitir desplazamiento 
+     en caso de ser necesario.
+   - Se aumentó el padding vertical (`padding: 2rem 1rem`) para darle espacio 
+     y que no pegue directamente al borde superior del navegador.
+
+2. Caja del Modal (`.modal-box`):
+   - Se agregó la regla `margin: auto;`. Gracias a las propiedades modernas de 
+     Flexbox, esto permite que el modal siga perfectamente centrado vertical 
+     y horizontalmente cuando su contenido es pequeño.
+   - Se actualizó el `max-height: calc(100vh - 4rem)` para asegurar que respete
+     los márgenes y siempre permita visualizar la barra de scroll interno.
+
+--------------------------------------------------------------------------------
+ESTADO ACTUAL
+--------------------------------------------------------------------------------
+Los modales largos ahora se muestran con su encabezado visible, permiten 
+hacer scroll hacia abajo sin problemas, y si el contenido es pequeño, siguen 
+estando perfectamente centrados en la pantalla.
+
+================================================================================
