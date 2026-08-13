@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
+import { useGlobalShortcuts } from '../../hooks/useGlobalShortcuts';
 
 export function Layout() {
   const [collapsed, setCollapsed] = useState(false);
+  useGlobalShortcuts();
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>

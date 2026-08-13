@@ -16,6 +16,12 @@ export default function Categorias() {
   const load = () => categoriasService.getAll().then(setCategorias).finally(() => setLoading(false));
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    const handleNewShortcut = () => openCreate();
+    window.addEventListener('shortcut:new', handleNewShortcut);
+    return () => window.removeEventListener('shortcut:new', handleNewShortcut);
+  }, []);
+
   const openCreate = () => { setEditing(null); setForm({ nombre: '', descripcion: '' }); setModalOpen(true); };
   const openEdit = (c) => { setEditing(c); setForm({ nombre: c.nombre, descripcion: c.descripcion || '' }); setModalOpen(true); };
 

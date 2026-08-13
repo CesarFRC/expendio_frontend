@@ -20,6 +20,12 @@ export default function Empleados() {
   const load = () => empleadosService.getAll().then(setEmpleados).finally(() => setLoading(false));
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    const handleNewShortcut = () => openCreate();
+    window.addEventListener('shortcut:new', handleNewShortcut);
+    return () => window.removeEventListener('shortcut:new', handleNewShortcut);
+  }, []);
+
   const openCreate = () => { setEditing(null); setForm(EMPTY_FORM); setModalOpen(true); };
   const openEdit = (e) => {
     setEditing(e);

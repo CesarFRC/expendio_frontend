@@ -7,6 +7,7 @@ import { PageLoader } from '../components/ui/LoadingSpinner';
 import { StockBadge } from '../components/ui/Badge';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../context/AuthContext';
+import { useOptimisticDelete } from '../hooks/useOptimisticDelete';
 import toast from 'react-hot-toast';
 
 const EMPTY_FORM = { nombre: '', precio: '', stock: '', stock_minimo: '', codigo_barras: '', imagen_url: '', categoria_id: '', proveedor_id: '' };
@@ -29,6 +30,13 @@ export default function Productos() {
       .finally(() => setLoading(false));
 
   useEffect(() => { load(); }, []);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    const handleNewShortcut = () => openCreate();
+    window.addEventListener('shortcut:new', handleNewShortcut);
+    return () => window.removeEventListener('shortcut:new', handleNewShortcut);
+  }, [isAdmin]);
 
   const openCreate = () => { setEditing(null); setForm(EMPTY_FORM); setModalOpen(true); };
   const openEdit = (p) => {
@@ -72,13 +80,19 @@ export default function Productos() {
     }
   };
 
-  const handleDescontinuar = async (p) => {
-    if (!confirm(`¿Descontinuar "${p.nombre}"?`)) return;
-    try {
-      await productosService.descontinuar(p.id);
-      toast.success('Producto descontinuado');
-      load();
-    } catch { toast.error('Error'); }
+  // Sistema de "Deshacer" (Eliminación optimista)
+  const { handleDelete } = useOptimisticDelete(
+    (id) => setProductos((prev) => prev.filter((p) => p.id !== id)), // onRemove
+    (restoredItem) => setProductos((prev) => [...prev, restoredItem]), // onRestore
+    async (id) => {
+      await productosService.descontinuar(id);
+      load(); // Recargar en background para confirmar estado real
+    }, // apiDelete
+    'Producto' // itemName
+  );
+
+  const handleDescontinuar = (p) => {
+    handleDelete(p.id, p);
   };
 
   const fmt = (n) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(n);

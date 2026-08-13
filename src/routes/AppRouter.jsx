@@ -12,6 +12,7 @@ import Clientes from '../pages/Clientes';
 import Empleados from '../pages/Empleados';
 import Categorias from '../pages/Categorias';
 import Proveedores from '../pages/Proveedores';
+import NotFound from '../pages/NotFound';
 
 export function AppRouter() {
   return (
@@ -42,8 +43,8 @@ export function AppRouter() {
         </Route>
       </Route>
 
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      {/* Fallback 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

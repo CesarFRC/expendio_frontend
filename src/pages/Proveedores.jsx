@@ -18,6 +18,12 @@ export default function Proveedores() {
   const load = () => proveedoresService.getAll().then(setProveedores).finally(() => setLoading(false));
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    const handleNewShortcut = () => openCreate();
+    window.addEventListener('shortcut:new', handleNewShortcut);
+    return () => window.removeEventListener('shortcut:new', handleNewShortcut);
+  }, []);
+
   const openCreate = () => { setEditing(null); setForm(EMPTY_FORM); setModalOpen(true); };
   const openEdit = (p) => {
     setEditing(p);
