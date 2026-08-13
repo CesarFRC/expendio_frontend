@@ -114,8 +114,8 @@ export default function POS() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 overflow: 'hidden'
               }}>
-                {p.imagen_url ? (
-                  <img src={p.imagen_url} alt={p.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                {(p.imagen_url || p.image_url || p.imagen) ? (
+                  <img src={p.imagen_url || p.image_url || p.imagen} alt={p.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <ShoppingBag size={24} style={{ color: 'var(--accent-green)', opacity: 0.7 }} />
                 )}
